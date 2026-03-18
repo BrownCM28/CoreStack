@@ -18,11 +18,11 @@ export default function SignUpPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const result = await (signUp.email as any)({
+    const result = await signUp.email({
       name,
       email,
       password,
+      // @ts-expect-error better-auth additional field
       role,
     });
     if (result.error) {
