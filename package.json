@@ -1,0 +1,48 @@
+{
+  "name": "corestack",
+  "version": "1.0.0",
+  "description": "Job board for data center construction, operations, and AI infrastructure",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BrownCM28/CoreStack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+
+  "bugs": {
+    "url": "https://github.com/BrownCM28/CoreStack/issues"
+  },
+  "homepage": "https://github.com/BrownCM28/CoreStack#readme",
+  "dependencies": {
+    "@prisma/client": "^5.22.0",
+    "@stripe/stripe-js": "^8.10.0",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "autoprefixer": "^10.4.27",
+    "better-auth": "^1.5.5",
+    "eslint": "^9.39.4",
+    "eslint-config-next": "^16.1.7",
+    "next": "^14.2.35",
+    "postcss": "^8.5.8",
+    "prisma": "^5.22.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "resend": "^6.9.4",
+    "stripe": "^20.4.1",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3"
+  }
+}

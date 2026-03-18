@@ -1,0 +1,203 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors */
+  --color-background: #0D0F12;
+  --color-surface: #111318;
+  --color-border: #000000;
+  --color-border-subtle: #1E2128;
+  --color-accent: #3ECF8E;
+  --color-accent-hover: #34C47E;
+  --color-text-primary: #F1F5F9;
+  --color-text-muted: #64748B;
+
+  /* Fonts */
+  --font-family-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-family-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    background-color: #0D0F12;
+    color: #F1F5F9;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    background-color: #0D0F12;
+    color: #F1F5F9;
+    min-height: 100vh;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    color: #F1F5F9;
+  }
+
+  a {
+    color: #64748B;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+
+  a:hover {
+    color: #3ECF8E;
+  }
+
+  ::selection {
+    background-color: rgba(62, 207, 142, 0.2);
+    color: #F1F5F9;
+  }
+
+  :focus-visible {
+    outline: 1.5px solid #3ECF8E;
+    outline-offset: 2px;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #0D0F12;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #1E2128;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2D3340;
+  }
+}
+
+@layer components {
+  /* Button base */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.5;
+    border-radius: 6px;
+    border: 1.5px solid #000000;
+    background: transparent;
+    color: #F1F5F9;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .btn:hover {
+    border-color: #3ECF8E;
+    color: #3ECF8E;
+    box-shadow: 0 0 0 1px #3ECF8E, 0 0 12px rgba(62, 207, 142, 0.15);
+  }
+
+  .btn:focus-visible {
+    outline: none;
+    border-color: #3ECF8E;
+    box-shadow: 0 0 0 1px #3ECF8E, 0 0 12px rgba(62, 207, 142, 0.15);
+  }
+
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  /* Primary filled button */
+  .btn-primary {
+    background: #3ECF8E;
+    border: 1.5px solid #000000;
+    color: #0D0F12;
+    font-weight: 600;
+  }
+
+  .btn-primary:hover {
+    background: #34C47E;
+    border-color: #000000;
+    color: #0D0F12;
+    box-shadow: 0 0 16px rgba(62, 207, 142, 0.25);
+  }
+
+  /* Input base */
+  .input {
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+    font-size: 0.875rem;
+    background: #111318;
+    color: #F1F5F9;
+    border: 1.5px solid #1E2128;
+    border-radius: 6px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    outline: none;
+  }
+
+  .input::placeholder {
+    color: #64748B;
+  }
+
+  .input:focus {
+    border-color: #3ECF8E;
+    box-shadow: 0 0 0 1px rgba(62, 207, 142, 0.2);
+  }
+
+  /* Card */
+  .card {
+    background: #111318;
+    border: 1.5px solid #000000;
+    border-radius: 8px;
+    transition: border-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .card-hover:hover {
+    border-color: rgba(62, 207, 142, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Badge */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.6rem;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    border: 1.5px solid #000000;
+    color: #64748B;
+    background: transparent;
+  }
+
+  .badge-accent {
+    border-color: rgba(62, 207, 142, 0.4);
+    color: #3ECF8E;
+    background: rgba(62, 207, 142, 0.08);
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid #1E2128;
+    margin: 0;
+  }
+}
