@@ -1,9 +1,17 @@
 "use client";
 
-import { createAuthClient } from "better-auth/react";
+// Auth temporarily disabled — stubs to keep build passing
+const noop = async () => ({ data: null, error: { message: "Auth coming soon" } });
 
-export const authClient = createAuthClient({
-  baseURL: process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
-});
+export const signIn = {
+  email: noop,
+  social: noop,
+};
 
-export const { signIn, signUp, signOut, useSession } = authClient;
+export const signUp = {
+  email: noop,
+};
+
+export const signOut = noop;
+
+export const useSession = () => ({ data: null, isPending: false });

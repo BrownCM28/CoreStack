@@ -31,7 +31,6 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "autoprefixer": "^10.4.27",
-    "better-auth": "^1.5.5",
     "next": "^14.2.35",
     "postcss": "^8.5.8",
     "prisma": "^5.22.0",

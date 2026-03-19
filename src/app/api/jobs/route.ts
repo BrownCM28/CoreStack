@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { headers } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
@@ -19,31 +17,7 @@ function uniqueSlug(base: string): string {
 }
 
 export async function POST(req: NextRequest) {
-  // Verify auth
-  const session = await auth.api.getSession({ headers: headers() });
-  if (!session?.user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
-  if (session.user.role !== "EMPLOYER" && session.user.role !== "ADMIN") {
-    return NextResponse.json(
-      { error: "Only employers can post jobs" },
-      { status: 403 },
-    );
-  }
-
-  const user = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    include: { company: true },
-  });
-
-  if (!user?.company) {
-    return NextResponse.json(
-      { error: "Please create a company profile first" },
-      { status: 400 },
-    );
-  }
-
+  // Auth temporarily disabled
   const body = await req.json();
   const {
     title,
@@ -56,10 +30,11 @@ export async function POST(req: NextRequest) {
     salaryMax,
     description,
     requirements,
+    companyId,
   } = body;
 
   // Basic validation
-  if (!title || !category || !type || !location || !description) {
+  if (!title || !category || !type || !location || !description || !companyId) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
 
@@ -78,7 +53,7 @@ export async function POST(req: NextRequest) {
       salaryMax: salaryMax ? parseInt(salaryMax, 10) : null,
       description,
       requirements: requirements || null,
-      companyId: user.company.id,
+      companyId,
       active: true,
     },
   });
