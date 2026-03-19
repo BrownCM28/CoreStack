@@ -5,6 +5,8 @@ import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import type { Metadata } from "next";
 
+export const dynamic = "force-dynamic";
+
 interface JobPageProps {
   params: { id: string };
 }
