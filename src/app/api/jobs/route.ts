@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { getMockJobs } from "@/lib/mock-data";
 
 export const dynamic = "force-dynamic";
 
@@ -63,36 +63,12 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
-  const category = searchParams.get("category");
-  const type = searchParams.get("type");
-  const remote = searchParams.get("remote");
-  const q = searchParams.get("q");
-  const page = Math.max(1, parseInt(searchParams.get("page") ?? "1", 10));
-  const limit = Math.min(50, parseInt(searchParams.get("limit") ?? "20", 10));
-
-  const where = {
-    active: true,
-    ...(category && { category: category as never }),
-    ...(type && { type: type as never }),
-    ...(remote === "true" && { isRemote: true }),
-    ...(q && {
-      OR: [
-        { title: { contains: q, mode: "insensitive" as const } },
-        { description: { contains: q, mode: "insensitive" as const } },
-      ],
-    }),
-  };
-
-  const [jobs, total] = await Promise.all([
-    prisma.job.findMany({
-      where,
-      include: { company: { select: { name: true, slug: true, logo: true } } },
-      orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-      take: limit,
-      skip: (page - 1) * limit,
-    }),
-    prisma.job.count({ where }),
-  ]);
-
-  return NextResponse.json({ jobs, total, page, pages: Math.ceil(total / limit) });
+  const result = getMockJobs({
+    category: searchParams.get("category") ?? undefined,
+    type: searchParams.get("type") ?? undefined,
+    remote: searchParams.get("remote") ?? undefined,
+    q: searchParams.get("q") ?? undefined,
+    page: searchParams.get("page") ?? undefined,
+  });
+  return NextResponse.json({ jobs: result.jobs, total: result.total, page: result.page, pages: result.totalPages });
 }

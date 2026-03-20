@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
-import type { Job, Company, JobType, JobCategory } from "@prisma/client";
+import { getMockJobs, type MockJob } from "@/lib/mock-data";
 
 interface JobListProps {
   searchParams: {
@@ -12,11 +11,9 @@ interface JobListProps {
   };
 }
 
-type JobWithCompany = Job & { company: Company };
-
 const PAGE_SIZE = 20;
 
-const JOB_TYPE_LABELS: Record<JobType, string> = {
+const JOB_TYPE_LABELS: Record<string, string> = {
   FULL_TIME: "Full-Time",
   PART_TIME: "Part-Time",
   CONTRACT: "Contract",
@@ -24,7 +21,7 @@ const JOB_TYPE_LABELS: Record<JobType, string> = {
   INTERNSHIP: "Internship",
 };
 
-const CATEGORY_LABELS: Record<JobCategory, string> = {
+const CATEGORY_LABELS: Record<string, string> = {
   DATA_CENTER_CONSTRUCTION: "DC Construction",
   DATA_CENTER_OPERATIONS: "DC Operations",
   NETWORK_ENGINEERING: "Network Eng.",
@@ -40,35 +37,7 @@ const CATEGORY_LABELS: Record<JobCategory, string> = {
 };
 
 async function getJobs(searchParams: JobListProps["searchParams"]) {
-  const page = Math.max(1, parseInt(searchParams.page ?? "1", 10));
-  const skip = (page - 1) * PAGE_SIZE;
-
-  const where = {
-    active: true,
-    ...(searchParams.category && { category: searchParams.category as JobCategory }),
-    ...(searchParams.type && { type: searchParams.type as JobType }),
-    ...(searchParams.remote === "true" && { isRemote: true }),
-    ...(searchParams.q && {
-      OR: [
-        { title: { contains: searchParams.q, mode: "insensitive" as const } },
-        { description: { contains: searchParams.q, mode: "insensitive" as const } },
-        { company: { name: { contains: searchParams.q, mode: "insensitive" as const } } },
-      ],
-    }),
-  };
-
-  const [jobs, total] = await Promise.all([
-    prisma.job.findMany({
-      where,
-      include: { company: true },
-      orderBy: [{ featured: "desc" }, { createdAt: "desc" }],
-      take: PAGE_SIZE,
-      skip,
-    }),
-    prisma.job.count({ where }),
-  ]);
-
-  return { jobs, total, page, totalPages: Math.ceil(total / PAGE_SIZE) };
+  return getMockJobs(searchParams);
 }
 
 export async function JobList({ searchParams }: JobListProps) {
@@ -120,7 +89,7 @@ export async function JobList({ searchParams }: JobListProps) {
       {/* Job cards */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
         {jobs.map((job) => (
-          <JobCard key={job.id} job={job as JobWithCompany} />
+          <JobCard key={job.id} job={job} />
         ))}
       </div>
 
@@ -163,7 +132,7 @@ export async function JobList({ searchParams }: JobListProps) {
   );
 }
 
-function JobCard({ job }: { job: JobWithCompany }) {
+function JobCard({ job }: { job: MockJob }) {
   const ageMs = Date.now() - job.createdAt.getTime();
   const ageDays = Math.floor(ageMs / (1000 * 60 * 60 * 24));
   const ageLabel =

@@ -1,21 +1,16 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { getMockJobBySlug } from "@/lib/mock-data";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
 import type { Metadata } from "next";
-
-export const dynamic = "force-dynamic";
 
 interface JobPageProps {
   params: { id: string };
 }
 
 export async function generateMetadata({ params }: JobPageProps): Promise<Metadata> {
-  const job = await prisma.job.findUnique({
-    where: { slug: params.id },
-    include: { company: true },
-  });
+  const job = getMockJobBySlug(params.id);
   if (!job) return { title: "Job Not Found" };
   return {
     title: `${job.title} at ${job.company.name}`,
@@ -32,10 +27,7 @@ const JOB_TYPE_LABELS: Record<string, string> = {
 };
 
 export default async function JobPage({ params }: JobPageProps) {
-  const job = await prisma.job.findUnique({
-    where: { slug: params.id, active: true },
-    include: { company: true },
-  });
+  const job = getMockJobBySlug(params.id);
 
   if (!job) notFound();
 
